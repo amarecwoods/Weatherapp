@@ -1,0 +1,78 @@
+import unittest
+import tkinter as tk
+from tkinter import messagebox
+from unittest.mock import patch
+import sys
+sys.path.append('/Users/amarewoods/Python-Test/Weather_app.py')
+from Weather_app import Weather
+
+
+class TestWeatherApp(unittest.TestCase):
+    def setUp(self):
+        self.app = tk.Tk()
+        self.app.withdraw()  # Hide the main window during tests
+
+    def test_search_city(self):
+        # Create a Weather instance
+        weather_frame = Weather(self.app, None)
+
+        # Mock user input and API response
+        with patch.object(tk.Entry, 'get', return_value='City'):
+            with patch.object(messagebox, 'showinfo') as mock_showinfo:
+                with patch('requests.get') as mock_requests_get:
+                    mock_requests_get.return_value.status_code = 200
+                    mock_requests_get.return_value.json.return_value = {
+                        'main': {'temp': 300},
+                        'weather': [{'description': 'Clear', 'main': 'Clear'}],
+                        'name': 'TestCity'
+                    }
+
+                    # Call the search method
+                    weather_frame.search()
+
+                    # Check if the showinfo method was called with the expected arguments
+                    mock_showinfo.assert_called_with(
+                        'Weather Info', 'City: TestCity\nTemperature: 80 F\nDescription: Clear'
+                    )
+
+    def test_search_zip_code(self):
+        # Create a Weather instance
+        weather_frame = Weather(self.app, None)
+
+        # Mock user input and API response
+        with patch.object(tk.Entry, 'get', return_value='Zip Code'):
+            with patch.object(messagebox, 'showinfo') as mock_showinfo:
+                with patch('requests.get') as mock_requests_get:
+                    mock_requests_get.return_value.status_code = 200
+                    mock_requests_get.return_value.json.return_value = {
+                        'main': {'temp': 300},
+                        'weather': [{'description': 'Clear', 'main': 'Clear'}],
+                        'name': 'TestCity'
+                    }
+
+                    # Call the search method
+                    weather_frame.search()
+
+                    # Check if the showinfo method was called with the expected arguments
+                    mock_showinfo.assert_called_with(
+                        'Weather Info', 'City: TestCity\nTemperature: 80 F\nDescription: Clear'
+                    )
+
+    def test_invalid_search_type(self):
+        # Create a Weather instance
+        weather_frame = Weather(self.app, None)
+
+        # Mock user input for an invalid search type
+        with patch.object(tk.Entry, 'get', return_value='InvalidType'):
+            with patch.object(messagebox, 'showerror') as mock_showerror:
+                # Call the search method
+                weather_frame.search()
+
+                # Check if the showerror method was called with the expected arguments
+                mock_showerror.assert_called_with('Error', 'Invalid search type')
+
+    def tearDown(self):
+        self.app.destroy()
+
+if __name__ == '__main__':
+    unittest.main()
