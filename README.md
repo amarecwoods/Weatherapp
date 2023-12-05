@@ -29,7 +29,7 @@ The app uses placeholder images for different weather conditions. Replace these 
 - Make sure to handle exceptions and errors gracefully, especially when dealing with API requests.
 - Customize the UI, color schemes, and images to fit your preferences.
 
-### Credits
+### Info on API and Imports
 - Tkinter: [https://docs.python.org/3/library/tkinter.html](https://docs.python.org/3/library/tkinter.html)
 - OpenWeatherMap API: [https://openweathermap.org/api](https://openweathermap.org/api)
 - Pillow (PIL Fork): [https://pillow.readthedocs.io/](https://pillow.readthedocs.io/)
